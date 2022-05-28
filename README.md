@@ -1,2 +1,2 @@
 # cs-codegen
-Codeine from C# codes
+Codegen from C# codes
