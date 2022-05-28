@@ -1,0 +1,12 @@
+/Volumes/Samsung_T5/Projects/cs-codegen/CodeGenerator/bin/Debug/net6.0/CodeGenerator.deps.json
+/Volumes/Samsung_T5/Projects/cs-codegen/CodeGenerator/bin/Debug/net6.0/CodeGenerator.dll
+/Volumes/Samsung_T5/Projects/cs-codegen/CodeGenerator/bin/Debug/net6.0/CodeGenerator.pdb
+/Volumes/Samsung_T5/Projects/cs-codegen/CodeGenerator/obj/Debug/net6.0/CodeGenerator.csproj.AssemblyReference.cache
+/Volumes/Samsung_T5/Projects/cs-codegen/CodeGenerator/obj/Debug/net6.0/CodeGenerator.GeneratedMSBuildEditorConfig.editorconfig
+/Volumes/Samsung_T5/Projects/cs-codegen/CodeGenerator/obj/Debug/net6.0/CodeGenerator.AssemblyInfoInputs.cache
+/Volumes/Samsung_T5/Projects/cs-codegen/CodeGenerator/obj/Debug/net6.0/CodeGenerator.AssemblyInfo.cs
+/Volumes/Samsung_T5/Projects/cs-codegen/CodeGenerator/obj/Debug/net6.0/CodeGenerator.csproj.CoreCompileInputs.cache
+/Volumes/Samsung_T5/Projects/cs-codegen/CodeGenerator/obj/Debug/net6.0/CodeGenerator.dll
+/Volumes/Samsung_T5/Projects/cs-codegen/CodeGenerator/obj/Debug/net6.0/refint/CodeGenerator.dll
+/Volumes/Samsung_T5/Projects/cs-codegen/CodeGenerator/obj/Debug/net6.0/CodeGenerator.pdb
+/Volumes/Samsung_T5/Projects/cs-codegen/CodeGenerator/obj/Debug/net6.0/ref/CodeGenerator.dll
