@@ -149,5 +149,54 @@ namespace CodeGenerator.Utils
                 ? (T)attr[0]
                 : default;
         }
+
+        /// <summary>
+        /// To determine whether the type is a custom type
+        /// </summary>
+        /// <returns></returns>
+        public static bool IsCustomType(this Type type)
+        {
+            if (type.IsBuiltInType())
+            {
+                return false;
+            }
+
+            if (!type.IsGenericType)
+            {
+                return true;
+            }
+
+            var genericType = type.GetGenericTypeDefinition();
+            var args = type.GetGenericArguments();
+
+            // Dictionary
+            if (genericType.IsDictionary()
+                && (args[0].IsCustomType() || args[1].IsCustomType()))
+            {
+                return true;
+            }
+
+            // Other Enumerables
+            if (genericType.IsList() && args[0].IsCustomType())
+            {
+                return true;
+            }
+
+            return false;
+        }
+
+        /// <summary>
+        /// Get types that require import from current type
+        /// </summary>
+        /// <param name="type"></param>
+        /// <returns></returns>
+        public static List<Type> GetTypeDependencies(this Type type)
+        {
+            return type
+                .GetProperties()
+                .Where(p => p.PropertyType.IsCustomType())
+                .Select(p => p.PropertyType)
+                .ToList();
+        }
     }
 }

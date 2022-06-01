@@ -1,4 +1,5 @@
-﻿using CodeGenerator.Test.Mocks;
+﻿using CodeGenerator.Attributes;
+using CodeGenerator.Test.Mocks;
 using CodeGenerator.Utils;
 
 namespace CodeGenerator.Test.Utils
@@ -68,6 +69,29 @@ namespace CodeGenerator.Test.Utils
 			Assert.IsTrue(types.Any(t => t == typeof(ChildDto)));
 			Assert.IsTrue(types.Any(t => t == typeof(GrandChildDto)));
 		}
+
+		[TestMethod("Should Be Able To Get GenerateTs Attribute")]
+		public void ShouldBeAbleToGetGenerateTsAttribute()
+		{
+			var attr = typeof(ObjectDto).GetCustomAttribute<GenerateTsAttribute>();
+			Assert.IsNotNull(attr);
+			Assert.IsTrue(attr.GetType() == typeof(GenerateTsAttribute));
+		}
+
+		[TestMethod("Should Be Able To Detect Custom Type")]
+		public void ShouldBeAbleToDetectCustomType()
+		{
+			Assert.IsFalse(typeof(int).IsCustomType());
+			Assert.IsFalse(typeof(List<int>).IsCustomType());
+			Assert.IsTrue(typeof(List<ObjectDto>).IsCustomType());
+			Assert.IsTrue(typeof(ObjectDto).IsCustomType());
+		}
+
+		[TestMethod("Should Be Able To Get Type Dependencies")]
+		public void ShouldBeAbleToGetTypeDependencies()
+		{
+			var deps = typeof(ObjectDto).GetTypeDependencies();
+			Assert.IsTrue(deps.Contains(typeof(ChildDto)));
+		}
 	}
 }
-
