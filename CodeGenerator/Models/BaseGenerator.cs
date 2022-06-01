@@ -21,6 +21,17 @@ namespace CodeGenerator.Models
             return outputs;
         }
 
+        public List<Type> GetAnnotatedTypes<T>()
+        {
+            return _option.TargetAssemblies
+                .SelectMany(assembly =>
+                {
+                    return assembly
+                        .GetTypes()
+                        .Where(type => type.IsDefined(typeof(T), false));
+                }).ToList();
+        }
+
         private Func<List<Output>> MakePipeline()
         {
             var (isDryRun, baseOutputPath) = _option;
@@ -32,9 +43,9 @@ namespace CodeGenerator.Models
 
             return () =>
             {
-                FileHandler.Clear(baseOutputPath);
+                FileHelper.Clear(baseOutputPath);
                 var metadata = GenerateMetadata();
-                FileHandler.WriteOutputs(metadata);
+                FileHelper.WriteOutputs(metadata);
 
                 return metadata;
             };
