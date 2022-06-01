@@ -1,7 +1,14 @@
-public class TypeScript : IGenerator
+using CodeGenerator.Models;
+
+namespace CodeGenerator
 {
-    public List<Output> Generate(Option option)
+    public class TypeScript : BaseGenerator
     {
-        return default;
+        public TypeScript(Option option) : base(option) { }
+
+        public override List<Output> GenerateMetadata()
+        {
+            return new();
+        }
     }
 }
