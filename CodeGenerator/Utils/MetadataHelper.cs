@@ -2,6 +2,9 @@
 {
     public static class MetadataHelper
     {
+        /// <summary>
+        /// Dictionary of built-in types for this codegen
+        /// </summary>
         private static readonly Dictionary<Type, string> _builtInTypes = new()
         {
             { typeof(byte), "number" },
@@ -27,6 +30,11 @@
             { typeof(object), "any" },
         };
 
+        /// <summary>
+        /// Check if it is built-in types
+        /// </summary>
+        /// <param name="type"></param>
+        /// <returns></returns>
         public static bool IsBuiltInType(this Type type)
         {
             return _builtInTypes.ContainsKey(type);
