@@ -14,7 +14,7 @@ public class TypeScriptTest
             IsDryRun = true,
             TargetAssemblies = new()
             {
-                Assembly.GetAssembly(typeof(TypeScript)),
+                Assembly.GetAssembly(typeof(TypeScriptTest)),
             }
         }).Generate();
 
