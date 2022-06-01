@@ -34,23 +34,56 @@ namespace CodeGenerator
         private List<Output> GenerateOutputs(List<TypeMetadata> typeMetadatas)
         {
             List<Output> outputs = new();
+            var dict = typeMetadatas.ToDictionary(x => x.Type, x => x);
 
             typeMetadatas.ForEach(x =>
             {
                 if (x.IsAnnotated)
                 {
+                    List<string> content = new();
+
                     // 1 - Header Note
-                    var content = FileContent.HeaderNotes;
+                    content.Add(FileContent.HeaderNotes);
 
                     // 2 - Populate Imports
+                    var toImports = x.Type.GetTypeDependencies().Where(t =>
+                    {
+                        dict.TryGetValue(t, out var type);
+                        return type.IsAnnotated;
+                    })
+                    .Select(t =>
+                    {
+                        dict.TryGetValue(t, out var type);
+                        return type;
+                    })
+                    .ToList();
+
+                    content.Add(ConstructImports(x, toImports));
 
                     // 3 - Populate Interface
+                    // TODO...
 
-                    outputs.Add(new(x.FullOutputPath, content));
+                    outputs.Add(new(x.FullOutputPath, string.Join('\n', content)));
                 }
             });
 
             return outputs;
+        }
+
+        private string ConstructImports(TypeMetadata main, List<TypeMetadata> imports)
+        {
+            Uri from = new(main.FullOutputPath);
+            
+            var result = imports.Select(t =>
+            {
+                Uri to = new(t.FullOutputPath);
+                var relativeUri = from.MakeRelativeUri(to);
+                string relativePath = Uri.UnescapeDataString(relativeUri.ToString());
+
+                return $"import {{{t.OutputName}}} from '{relativePath}';";
+            });
+
+            return string.Join('\n', result);
         }
     }
 }
