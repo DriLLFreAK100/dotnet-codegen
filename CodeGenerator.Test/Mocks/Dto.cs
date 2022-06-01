@@ -1,4 +1,4 @@
-﻿namespace CodeGenerator.Test.Models
+﻿namespace CodeGenerator.Test.Mocks
 {
     public class ListDto
     {

@@ -1,4 +1,4 @@
-﻿using CodeGenerator.Test.Models;
+﻿using CodeGenerator.Test.Mocks;
 using CodeGenerator.Utils;
 
 namespace CodeGenerator.Test.Utils

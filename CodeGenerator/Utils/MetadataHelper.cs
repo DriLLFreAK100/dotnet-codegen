@@ -140,5 +140,20 @@ namespace CodeGenerator.Utils
                 .GetInterfaces()
                 .Any(e => e.GetGenericTypeDefinition() == typeof(IEnumerable<>));
         }
+
+        /// <summary>
+        /// Get custom attribute in target type
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="type"></param>
+        /// <returns></returns>
+        public static T GetCustomAttribute<T>(this Type type)
+        {
+            var attr = type.GetCustomAttributes(typeof(T), false);
+
+            return attr.Length > 0
+                ? (T)attr[0]
+                : default;
+        }
     }
 }

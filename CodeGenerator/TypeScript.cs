@@ -1,4 +1,5 @@
 using CodeGenerator.Attributes;
+using CodeGenerator.Common;
 using CodeGenerator.Models;
 using CodeGenerator.Utils;
 
@@ -20,10 +21,13 @@ namespace CodeGenerator
                 .Distinct()
                 .ToList();
 
-            // 3 - Populate pre-meta info
+            // 3 - Generate metadata
+            List<TypeMetadata> metadata = types.Select(type =>
+            {
+                return new TypeMetadata(type, GetOption().BaseOutputPath);
+            }).ToList();
 
-
-            // 4 - Generate metadata
+            // 4 - Generate output based on metadata
 
 
             return new();

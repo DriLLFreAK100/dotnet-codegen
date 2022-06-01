@@ -21,6 +21,11 @@ namespace CodeGenerator.Models
             return outputs;
         }
 
+        public Option GetOption()
+        {
+            return _option;
+        }
+
         public List<Type> GetAnnotatedTypes<T>()
         {
             return _option.TargetAssemblies
