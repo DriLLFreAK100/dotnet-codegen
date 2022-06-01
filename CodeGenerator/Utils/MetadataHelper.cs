@@ -1,4 +1,6 @@
-﻿namespace CodeGenerator.Utils
+﻿using CodeGenerator.Common;
+
+namespace CodeGenerator.Utils
 {
     public static class MetadataHelper
     {
@@ -7,27 +9,27 @@
         /// </summary>
         private static readonly Dictionary<Type, string> _builtInTypes = new()
         {
-            { typeof(byte), "number" },
-            { typeof(sbyte), "number" },
-            { typeof(decimal), "number" },
-            { typeof(double), "number" },
-            { typeof(float), "number" },
-            { typeof(int), "number" },
-            { typeof(uint), "number" },
-            { typeof(nint), "number" },
-            { typeof(nuint), "number" },
-            { typeof(long), "number" },
-            { typeof(ulong), "number" },
-            { typeof(short), "number" },
-            { typeof(ushort), "number" },
+            { typeof(byte), TsConstants.Number },
+            { typeof(sbyte), TsConstants.Number },
+            { typeof(decimal), TsConstants.Number },
+            { typeof(double), TsConstants.Number },
+            { typeof(float), TsConstants.Number },
+            { typeof(int), TsConstants.Number },
+            { typeof(uint), TsConstants.Number },
+            { typeof(nint), TsConstants.Number },
+            { typeof(nuint), TsConstants.Number },
+            { typeof(long), TsConstants.Number },
+            { typeof(ulong), TsConstants.Number },
+            { typeof(short), TsConstants.Number },
+            { typeof(ushort), TsConstants.Number },
 
-            { typeof(bool), "boolean" },
+            { typeof(bool), TsConstants.Boolean },
 
-            { typeof(char), "string" },
-            { typeof(string), "string" },
-            { typeof(DateTime), "string" },
+            { typeof(char), TsConstants.String },
+            { typeof(string), TsConstants.String },
+            { typeof(DateTime), TsConstants.String },
 
-            { typeof(object), "any" },
+            { typeof(object), TsConstants.Any },
         };
 
         /// <summary>
@@ -140,4 +142,3 @@
         }
     }
 }
-

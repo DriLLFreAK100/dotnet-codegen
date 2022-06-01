@@ -8,9 +8,11 @@
   <ItemGroup>
     <None Remove="Utils\" />
     <None Remove="Attributes\" />
+    <None Remove="Common\" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Utils\" />
     <Folder Include="Attributes\" />
+    <Folder Include="Common\" />
   </ItemGroup>
 </Project>
