@@ -61,14 +61,8 @@ namespace CodeGenerator.Utils
 
                 var types = type
                     .GetProperties()
-                    .Where(p =>
-                    {
-                        return !p.PropertyType.IsBuiltInType();
-                    })
-                    .SelectMany(p =>
-                    {
-                        return p.PropertyType.GetTargetTypes();
-                    })
+                    .Where(p => !p.PropertyType.IsBuiltInType())
+                    .SelectMany(p => p.PropertyType.GetTargetTypes())
                     .ToList();
 
                 result.AddRange(types);
