@@ -70,7 +70,7 @@ namespace CodeGenerator.Models
             {
                 if (!IsAnnotated)
                 {
-                    return TsConstants.Any;
+                    return TsType.Any;
                 }
 
                 return Type.Name;

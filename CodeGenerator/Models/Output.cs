@@ -17,5 +17,11 @@ namespace CodeGenerator.Models
             path = Path;
             content = Content;
         }
+
+        public Output(string path, string content)
+        {
+            Path = path;
+            Content = content;
+        }
     }
 }

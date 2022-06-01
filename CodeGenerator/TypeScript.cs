@@ -15,22 +15,42 @@ namespace CodeGenerator
             var types = GetAnnotatedTypes<GenerateTsAttribute>();
             //var store = types.ToDictionary(x => x, _ => new Output());
 
-            // 2 - Get recursively all subtypes
-            types = types
+            // 2 - Generate metadata
+            var metadata = types
                 .SelectMany(type => type.GetTargetTypes())
                 .Distinct()
+                .Select(type =>
+                {
+                    return new TypeMetadata(type, GetOption().BaseOutputPath);
+                })
                 .ToList();
 
-            // 3 - Generate metadata
-            List<TypeMetadata> metadata = types.Select(type =>
+            // 3 - Generate output based on metadata
+            var result = GenerateOutputs(metadata);
+
+            return result;
+        }
+
+        private List<Output> GenerateOutputs(List<TypeMetadata> typeMetadatas)
+        {
+            List<Output> outputs = new();
+
+            typeMetadatas.ForEach(x =>
             {
-                return new TypeMetadata(type, GetOption().BaseOutputPath);
-            }).ToList();
+                if (x.IsAnnotated)
+                {
+                    // 1 - Header Note
+                    var content = FileContent.HeaderNotes;
 
-            // 4 - Generate output based on metadata
+                    // 2 - Populate Imports
 
+                    // 3 - Populate Interface
 
-            return new();
+                    outputs.Add(new(x.FullOutputPath, content));
+                }
+            });
+
+            return outputs;
         }
     }
 }

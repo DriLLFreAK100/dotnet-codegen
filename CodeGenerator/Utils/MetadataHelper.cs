@@ -9,27 +9,27 @@ namespace CodeGenerator.Utils
         /// </summary>
         private static readonly Dictionary<Type, string> _builtInTypes = new()
         {
-            { typeof(byte), TsConstants.Number },
-            { typeof(sbyte), TsConstants.Number },
-            { typeof(decimal), TsConstants.Number },
-            { typeof(double), TsConstants.Number },
-            { typeof(float), TsConstants.Number },
-            { typeof(int), TsConstants.Number },
-            { typeof(uint), TsConstants.Number },
-            { typeof(nint), TsConstants.Number },
-            { typeof(nuint), TsConstants.Number },
-            { typeof(long), TsConstants.Number },
-            { typeof(ulong), TsConstants.Number },
-            { typeof(short), TsConstants.Number },
-            { typeof(ushort), TsConstants.Number },
+            { typeof(byte), TsType.Number },
+            { typeof(sbyte), TsType.Number },
+            { typeof(decimal), TsType.Number },
+            { typeof(double), TsType.Number },
+            { typeof(float), TsType.Number },
+            { typeof(int), TsType.Number },
+            { typeof(uint), TsType.Number },
+            { typeof(nint), TsType.Number },
+            { typeof(nuint), TsType.Number },
+            { typeof(long), TsType.Number },
+            { typeof(ulong), TsType.Number },
+            { typeof(short), TsType.Number },
+            { typeof(ushort), TsType.Number },
 
-            { typeof(bool), TsConstants.Boolean },
+            { typeof(bool), TsType.Boolean },
 
-            { typeof(char), TsConstants.String },
-            { typeof(string), TsConstants.String },
-            { typeof(DateTime), TsConstants.String },
+            { typeof(char), TsType.String },
+            { typeof(string), TsType.String },
+            { typeof(DateTime), TsType.String },
 
-            { typeof(object), TsConstants.Any },
+            { typeof(object), TsType.Any },
         };
 
         /// <summary>
