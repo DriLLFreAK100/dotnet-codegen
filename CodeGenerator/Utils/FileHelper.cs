@@ -2,7 +2,7 @@
 
 namespace CodeGenerator.Utils
 {
-    public static class FileHandler
+    public static class FileHelper
 	{
 		/// <summary>
 		/// Delete all folders and files in the given directory
