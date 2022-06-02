@@ -1,7 +1,7 @@
 # Code Generator
 This project is intended to create an easy to use CodeGenerator for C#. 
 
-Currently, this is only targeting C# to TypeScript as the development use case.
+Currently, this is only targeting `C# to TypeScript` as the development use case.
 
 ## Basic Usage
 Simply annotate the C# classes that you would like to generate their `TypeScript interfaces`.
