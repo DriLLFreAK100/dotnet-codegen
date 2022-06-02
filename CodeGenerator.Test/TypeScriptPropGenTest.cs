@@ -1,37 +1,10 @@
-﻿using System.Reflection;
-using CodeGenerator.Attributes;
-using CodeGenerator.Models;
-using CodeGenerator.Test.Mocks;
+﻿using CodeGenerator.Test.Mocks;
 
 namespace CodeGenerator.Test
 {
-	[TestClass]
-    public class TypeScriptPropGenTest
-	{
-        private TypeScript _dryRunGenerator;
-        private List<Type> _types;
-        private List<TypeMetadata> _metadata;
-        private Dictionary<Type, TypeMetadata> _metadataDict;
-        private PrivateObject _po;
-
-        [TestInitialize]
-        public void Initialize()
-        {
-            _dryRunGenerator = new TypeScript(new Option()
-            {
-                IsDryRun = true,
-                TargetAssemblies = new()
-                {
-                    Assembly.GetAssembly(typeof(TypeScriptTest)),
-                }
-            });
-
-            _po = new(_dryRunGenerator);
-            _types = _dryRunGenerator.GetAnnotatedTypes<GenerateTsAttribute>();
-            _metadata = (List<TypeMetadata>)_po.Invoke("GetTypeMetadatas", _types);
-            _metadataDict = _metadata.ToDictionary(x => x.Type, x => x);
-        }
-
+    [TestClass]
+    public class TypeScriptPropGenTest : TypeScriptTestBase
+    {
         [TestMethod("Should Be Able To Get Ts Type For List With Built-In Types")]
         public void ShouldBeAbleToGetTsTypeForListWithBuiltInTypes()
         {

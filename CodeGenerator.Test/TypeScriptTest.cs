@@ -1,4 +1,3 @@
-using System.Reflection;
 using CodeGenerator.Attributes;
 using CodeGenerator.Models;
 using CodeGenerator.Test.Mocks;
@@ -6,17 +5,8 @@ using CodeGenerator.Test.Mocks;
 namespace CodeGenerator.Test;
 
 [TestClass]
-public class TypeScriptTest
+public class TypeScriptTest : TypeScriptTestBase
 {
-    private readonly TypeScript _dryRunGenerator = new TypeScript(new Option()
-    {
-        IsDryRun = true,
-        TargetAssemblies = new()
-        {
-            Assembly.GetAssembly(typeof(TypeScriptTest)),
-        }
-    });
-
     [TestMethod("Should Be Able To Generate Metadata")]
     public void ShouldBeAbleToGenerateMetadata()
     {
