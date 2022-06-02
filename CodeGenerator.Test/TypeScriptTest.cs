@@ -98,6 +98,7 @@ public class TypeScriptTest : TypeScriptTestBase
             "   children: InterfaceChild[];",
             "   builtInDict: { [key: number]: string };",
             "}",
+            "",
         });
 
         Assert.IsTrue(interfaceContent == expected);
