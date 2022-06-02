@@ -43,6 +43,23 @@ namespace CodeGenerator.Utils
         }
 
         /// <summary>
+        /// Get built-in TypeScript type
+        /// </summary>
+        /// <param name="type"></param>
+        /// <returns></returns>
+        public static string GetBuiltInTsType(this Type type)
+        {
+            _builtInTypes.TryGetValue(type, out var value);
+
+            if (string.IsNullOrEmpty(value))
+            {
+                return TsType.Any;
+            }
+
+            return value;
+        }
+
+        /// <summary>
         /// To distill type to generate.
         /// Should handle case of generics, e.g. List, Dictionary, etc.
         /// </summary>

@@ -1,4 +1,5 @@
 ﻿using CodeGenerator.Attributes;
+using CodeGenerator.Common;
 using CodeGenerator.Test.Mocks;
 using CodeGenerator.Utils;
 
@@ -122,6 +123,33 @@ namespace CodeGenerator.Test.Utils
 			var multiTypes = typeof(Dictionary<ObjectDto, ListDto>).GetDependencyTargetTypes();
 			Assert.IsTrue(multiTypes.Contains(typeof(ObjectDto)));
 			Assert.IsTrue(multiTypes.Contains(typeof(ListDto)));
+		}
+
+		[TestMethod("Should Be Get Built-in Ts Types")]
+		public void ShouldBeAbleToGetBuiltInTsTypes()
+		{
+			Assert.IsTrue(typeof(DictionaryDto).GetBuiltInTsType() == TsType.Any);
+			Assert.IsTrue(typeof(object).GetBuiltInTsType() == TsType.Any);
+
+			Assert.IsTrue(typeof(byte).GetBuiltInTsType() == TsType.Number);
+			Assert.IsTrue(typeof(sbyte).GetBuiltInTsType() == TsType.Number);
+			Assert.IsTrue(typeof(decimal).GetBuiltInTsType() == TsType.Number);
+			Assert.IsTrue(typeof(double).GetBuiltInTsType() == TsType.Number);
+			Assert.IsTrue(typeof(float).GetBuiltInTsType() == TsType.Number);
+			Assert.IsTrue(typeof(int).GetBuiltInTsType() == TsType.Number);
+			Assert.IsTrue(typeof(uint).GetBuiltInTsType() == TsType.Number);
+			Assert.IsTrue(typeof(nint).GetBuiltInTsType() == TsType.Number);
+			Assert.IsTrue(typeof(nuint).GetBuiltInTsType() == TsType.Number);
+			Assert.IsTrue(typeof(long).GetBuiltInTsType() == TsType.Number);
+			Assert.IsTrue(typeof(ulong).GetBuiltInTsType() == TsType.Number);
+			Assert.IsTrue(typeof(short).GetBuiltInTsType() == TsType.Number);
+			Assert.IsTrue(typeof(ushort).GetBuiltInTsType() == TsType.Number);
+
+			Assert.IsTrue(typeof(bool).GetBuiltInTsType() == TsType.Boolean);
+
+			Assert.IsTrue(typeof(char).GetBuiltInTsType() == TsType.String);
+			Assert.IsTrue(typeof(string).GetBuiltInTsType() == TsType.String);
+			Assert.IsTrue(typeof(DateTime).GetBuiltInTsType() == TsType.String);
 		}
 	}
 }
