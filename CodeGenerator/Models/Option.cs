@@ -10,19 +10,24 @@ namespace CodeGenerator.Models
         public bool IsDryRun { get; set; } = false;
 
         /// <summary>
-        /// Base directory to write files
+        /// Base directory to write files, relative to program execution path
         /// </summary>
-        public string BaseOutputPath { get; set; } = "./Outputs";
+        public string RelativeBaseOutputPath { get; set; } = "./Outputs";
+
+        /// <summary>
+        /// Line separator. Default to Environment.NewLine
+        /// </summary>
+        public string LineSeparator { get; set; } = Environment.NewLine;
 
         /// <summary>
         /// Assemblies involved for the code generation
         /// </summary>
         public List<Assembly> TargetAssemblies { get; set; } = new();
 
-        public void Deconstruct(out bool isDryRun, out string baseOutputPath)
+        public void Deconstruct(out bool isDryRun, out string relativeBaseOutputPath)
         {
             isDryRun = IsDryRun;
-            baseOutputPath = BaseOutputPath;
+            relativeBaseOutputPath = RelativeBaseOutputPath;
         }
     }
 }

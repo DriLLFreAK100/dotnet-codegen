@@ -21,7 +21,7 @@ namespace CodeGenerator
                 .Distinct()
                 .Select(type =>
                 {
-                    return new TypeMetadata(type, GetOption().BaseOutputPath);
+                    return new TypeMetadata(type, GetOption().RelativeBaseOutputPath);
                 })
                 .ToList();
 
@@ -63,27 +63,38 @@ namespace CodeGenerator
                     // 3 - Populate Interface
                     // TODO...
 
-                    outputs.Add(new(x.FullOutputPath, string.Join('\n', content)));
+                    outputs.Add(new(
+                        x.FullOutputPath,
+                        string.Join(GetOption().LineSeparator, content)));
                 }
             });
 
             return outputs;
         }
 
-        private string ConstructImports(TypeMetadata main, List<TypeMetadata> imports)
+        private string ConstructImports(
+            TypeMetadata main,
+            List<TypeMetadata> imports)
         {
             Uri from = new(main.FullOutputPath);
             
             var result = imports.Select(t =>
             {
+                // Compute relative path
                 Uri to = new(t.FullOutputPath);
                 var relativeUri = from.MakeRelativeUri(to);
                 string relativePath = Uri.UnescapeDataString(relativeUri.ToString());
 
-                return $"import {{{t.OutputName}}} from '{relativePath}';";
+                // Append ./ for same directory
+                if (!relativePath.StartsWith("."))
+                {
+                    relativePath = $"./{relativePath}";
+                }
+
+                return $"import {{ {t.OutputName} }} from '{relativePath}';";
             });
 
-            return string.Join('\n', result);
+            return string.Join(GetOption().LineSeparator, result);
         }
     }
 }

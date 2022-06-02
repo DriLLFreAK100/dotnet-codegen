@@ -77,10 +77,15 @@ namespace CodeGenerator.Models
             }
         }
 
-        public TypeMetadata(Type type, string baseOutputPath = "./")
+        public TypeMetadata(Type type, string relativeBaseOutputPath = "")
         {
             Type = type;
-            BaseOutputPath = baseOutputPath;
+            BaseOutputPath = AppDomain.CurrentDomain.BaseDirectory;
+
+            if (!string.IsNullOrEmpty(relativeBaseOutputPath))
+            {
+                BaseOutputPath = $"{BaseOutputPath}/{relativeBaseOutputPath}";
+            }
         }
     }
 }
