@@ -7,11 +7,26 @@ namespace CodeGenerator.Test;
 [TestClass]
 public class TypeScriptTest : TypeScriptTestBase
 {
-    [TestMethod("Should Be Able To Generate Metadata")]
-    public void ShouldBeAbleToGenerateMetadata()
+    [TestMethod("Should Be Able To Generate Output Physical Files")]
+    public void ShouldBeAbleToGenerateOutput()
+    {
+        _generator.Generate();
+
+        var outputPath = $"{Path.GetDirectoryName(AppDomain.CurrentDomain.BaseDirectory)}/Outputs";
+
+        Assert.IsTrue(Directory.Exists(outputPath));
+        Assert.IsTrue(Directory.EnumerateFiles(outputPath).Any(f => f.EndsWith(".ts")));
+    }
+
+    [TestMethod("Should Be Able To Generate Output Metadata")]
+    public void ShouldBeAbleToGenerateOutputMetadata()
     {
         var metadata = _dryRunGenerator.Generate();
         Assert.IsNotNull(metadata);
+
+        Assert.IsTrue(metadata.All(m =>
+            !string.IsNullOrEmpty(m.Content)
+            && !string.IsNullOrEmpty(m.Path)));
     }
 
     [TestMethod("Should Be Able To Construct Imports By Metadata")]

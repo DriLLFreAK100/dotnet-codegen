@@ -1,12 +1,14 @@
 ﻿using System.Reflection;
 using CodeGenerator.Attributes;
 using CodeGenerator.Models;
+using CodeGenerator.Utils;
 
 namespace CodeGenerator.Test
 {
     [TestClass]
     public class TypeScriptTestBase
-	{
+    {
+        protected TypeScript _generator;
         protected TypeScript _dryRunGenerator;
         protected List<Type> _types;
         protected List<TypeMetadata> _metadata;
@@ -16,6 +18,15 @@ namespace CodeGenerator.Test
         [TestInitialize]
         public void Initialize()
         {
+            _generator = new TypeScript(new Option()
+            {
+                RelativeBaseOutputPath = "./Outputs",
+                TargetAssemblies = new()
+                {
+                    Assembly.GetAssembly(typeof(TypeScriptTest)),
+                }
+            });
+
             _dryRunGenerator = new TypeScript(new Option()
             {
                 IsDryRun = true,
@@ -29,6 +40,13 @@ namespace CodeGenerator.Test
             _types = _dryRunGenerator.GetAnnotatedTypes<GenerateTsAttribute>();
             _metadata = (List<TypeMetadata>)_po.Invoke("GetTypeMetadatas", _types);
             _metadataDict = _metadata.ToDictionary(x => x.Type, x => x);
+        }
+
+        [TestCleanup]
+        public void Cleanup()
+        {
+            var outputPath = $"{Path.GetDirectoryName(AppDomain.CurrentDomain.BaseDirectory)}/Outputs";
+            FileHelper.Clear(outputPath);
         }
     }
 }
