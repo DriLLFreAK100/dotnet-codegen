@@ -63,7 +63,7 @@ namespace CodeGenerator
                 .Distinct()
                 .Select(type =>
                 {
-                    return new TypeMetadata(type, GetOption().RelativeBaseOutputPath);
+                    return new TypeMetadata(type, GetOption().ActiveBaseOutputPath);
                 })
                 .ToList();
         }

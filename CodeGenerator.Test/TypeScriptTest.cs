@@ -7,16 +7,28 @@ namespace CodeGenerator.Test;
 [TestClass]
 public class TypeScriptTest : TypeScriptTestBase
 {
-    [TestMethod("Should Be Able To Generate Output Physical Files")]
-    public void ShouldBeAbleToGenerateOutput()
+    [TestMethod("Should Be Able To Output Physical Files")]
+    public void ShouldBeAbleToOutput()
     {
         _generator.Generate();
 
-        var outputPath = $"{Path.GetDirectoryName(AppDomain.CurrentDomain.BaseDirectory)}/Outputs";
+        var outputPath = _absolutePathGenerator.GetOption().ActiveBaseOutputPath;
 
         Assert.IsTrue(Directory.Exists(outputPath));
         Assert.IsTrue(Directory.EnumerateFiles(outputPath).Any(f => f.EndsWith(".ts")));
     }
+
+    [TestMethod("Should Be Able To Output Physical Files For Absolute Path")]
+    public void ShouldBeAbleToOutputPhysicalFilesForAbsolutePath()
+    {
+        _absolutePathGenerator.Generate();
+
+        var outputPath = _absolutePathGenerator.GetOption().ActiveBaseOutputPath;
+
+        Assert.IsTrue(Directory.Exists(outputPath));
+        Assert.IsTrue(Directory.EnumerateFiles(outputPath).Any(f => f.EndsWith(".ts")));
+    }
+
 
     [TestMethod("Should Be Able To Generate Output Metadata")]
     public void ShouldBeAbleToGenerateOutputMetadata()
@@ -33,7 +45,7 @@ public class TypeScriptTest : TypeScriptTestBase
     public void ShouldBeAbleToConstructImportsByMetadata()
     {
         PrivateObject po = new(_dryRunGenerator);
-        var relativeRoot = "./Outputs";
+        var relativeRoot = "/Outputs";
 
         var importsContent = (string)po.Invoke(
             "ConstructImportsByMetadata",
@@ -70,7 +82,7 @@ public class TypeScriptTest : TypeScriptTestBase
 
         var interfaceContent = (string)po.Invoke(
             "GetInterfaceContent",
-            new TypeMetadata(typeof(InterfaceRoot)) { },
+            new TypeMetadata(typeof(InterfaceRoot), string.Empty) { },
             metadata.ToDictionary(x => x.Type, x => x));
 
         var expected = string.Join(_dryRunGenerator.GetOption().LineSeparator, new string[]

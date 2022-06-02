@@ -8,6 +8,7 @@ namespace CodeGenerator.Test
     [TestClass]
     public class TypeScriptTestBase
     {
+        protected TypeScript _absolutePathGenerator;
         protected TypeScript _generator;
         protected TypeScript _dryRunGenerator;
         protected List<Type> _types;
@@ -18,6 +19,15 @@ namespace CodeGenerator.Test
         [TestInitialize]
         public void Initialize()
         {
+            _absolutePathGenerator = new TypeScript(new Option()
+            {
+                AbsoluteBaseOutputPath = $"{AppDomain.CurrentDomain.BaseDirectory}/Outputs",
+                TargetAssemblies = new()
+                {
+                    Assembly.GetAssembly(typeof(TypeScriptTest)),
+                }
+            });
+
             _generator = new TypeScript(new Option()
             {
                 RelativeBaseOutputPath = "./Outputs",
