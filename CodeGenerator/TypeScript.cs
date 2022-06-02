@@ -37,16 +37,18 @@ namespace CodeGenerator
                 .Where(t => t.IsAnnotated)
                 .Select(t =>
                 {
+                    var sep = GetOption().LineSeparator;
+
                     List<string> content = new()
                     {
                         FileContent.HeaderNotes,
                         GetImportsContent(t, dict),
                         GetInterfaceContent(t, dict),
-                    };
+                        };
 
                     return new Output(
                         t.FullOutputPath,
-                        string.Join(GetOption().LineSeparator, content));
+                        string.Join($"{sep}{sep}", content) + sep);
                 })
                 .ToList();
         }
