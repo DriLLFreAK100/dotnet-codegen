@@ -37,18 +37,17 @@ namespace CodeGenerator
                 .Where(t => t.IsAnnotated)
                 .Select(t =>
                 {
-                    var sep = GetOption().LineSeparator;
-
-                    List<string> content = new()
+                    var content = new List<string>()
                     {
                         FileContent.HeaderNotes,
                         GetImportsContent(t, dict),
                         GetInterfaceContent(t, dict),
-                    };
+                    }
+                    .Where(c => !string.IsNullOrWhiteSpace(c));
 
                     return new Output(
                         t.FullOutputPath,
-                        string.Join($"{sep}{sep}", content) + sep);
+                        string.Join(GetOption().LineSeparator, content));
                 })
                 .ToList();
         }
@@ -99,7 +98,7 @@ namespace CodeGenerator
 
             content.Add("}");
 
-            return string.Join(GetOption().LineSeparator, content);
+            return string.Join(GetOption().LineSeparator, content) + GetOption().LineSeparator;
         }
 
         /// <summary>
@@ -127,7 +126,9 @@ namespace CodeGenerator
             // Construct import content
             var result = ConstructImportsByMetadata(meta, toImports);
 
-            return result;
+            return string.IsNullOrEmpty(result.Trim())
+                ? result
+                : result + GetOption().LineSeparator;
         }
 
         /// <summary>

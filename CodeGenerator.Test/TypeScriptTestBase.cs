@@ -51,13 +51,6 @@ namespace CodeGenerator.Test
             _metadata = (List<TypeMetadata>)_po.Invoke("GetTypeMetadatas", _types);
             _metadataDict = _metadata.ToDictionary(x => x.Type, x => x);
         }
-
-        [TestCleanup]
-        public void Cleanup()
-        {
-            var outputPath = $"{Path.GetDirectoryName(AppDomain.CurrentDomain.BaseDirectory)}/Outputs";
-            FileHelper.Clear(outputPath);
-        }
     }
 }
 
