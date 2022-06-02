@@ -31,6 +31,11 @@ namespace CodeGenerator
             return result;
         }
 
+        /// <summary>
+        /// Generate the list of codegen output
+        /// </summary>
+        /// <param name="typeMetadatas"></param>
+        /// <returns></returns>
         private List<Output> GenerateOutputs(List<TypeMetadata> typeMetadatas)
         {
             List<Output> outputs = new();
@@ -38,30 +43,14 @@ namespace CodeGenerator
 
             typeMetadatas.ForEach(x =>
             {
+                // Only types annotated with GeneratedTs will be generated
                 if (x.IsAnnotated)
                 {
-                    List<string> content = new();
-
-                    // 1 - Header Note
-                    content.Add(FileContent.HeaderNotes);
-
-                    // 2 - Populate Imports
-                    var toImports = x.Type.GetTypeDependencies().Where(t =>
+                    List<string> content = new()
                     {
-                        dict.TryGetValue(t, out var type);
-                        return type.IsAnnotated;
-                    })
-                    .Select(t =>
-                    {
-                        dict.TryGetValue(t, out var type);
-                        return type;
-                    })
-                    .ToList();
-
-                    content.Add(ConstructImports(x, toImports));
-
-                    // 3 - Populate Interface
-                    // TODO...
+                        FileContent.HeaderNotes,
+                        GetImportsContent(x, dict),
+                    };
 
                     outputs.Add(new(
                         x.FullOutputPath,
@@ -72,7 +61,40 @@ namespace CodeGenerator
             return outputs;
         }
 
-        private string ConstructImports(
+        /// <summary>
+        /// Retrieve imports content
+        /// </summary>
+        /// <param name="meta"></param>
+        /// <param name="dict"></param>
+        /// <returns></returns>
+        private string GetImportsContent(TypeMetadata meta, Dictionary<Type, TypeMetadata> dict)
+        {
+            Func<Type, TypeMetadata> getTypeMetadata = (source) =>
+            {
+                dict.TryGetValue(source, out var target);
+                return target;
+            };
+
+            // Construct Dependencies' metadata
+            var toImports = meta.Type
+                .GetTypeDependencies()
+                .Where(t => getTypeMetadata(t).IsAnnotated)
+                .Select(t => getTypeMetadata(t))
+                .ToList();
+
+            // Construct import content
+            var result = ConstructImportsByMetadata(meta, toImports);
+
+            return result;
+        }
+
+        /// <summary>
+        /// Construct imports content based on metadata received
+        /// </summary>
+        /// <param name="main"></param>
+        /// <param name="imports"></param>
+        /// <returns></returns>
+        private string ConstructImportsByMetadata(
             TypeMetadata main,
             List<TypeMetadata> imports)
         {
