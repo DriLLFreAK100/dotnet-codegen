@@ -24,6 +24,21 @@ namespace CodeGenerator.Utils
                 .Trim()
                 .ToLower();
         }
+
+        /// <summary>
+        /// Convert PascalCase to camelCase
+        /// </summary>
+        /// <param name="value"></param>
+        /// <returns></returns>
+        public static string PascalToCamel(this string value)
+        {
+            if (string.IsNullOrEmpty(value))
+            {
+                return value;
+            }
+
+            return char.ToLower(value[0]) + value[1..];
+        }
     }
 }
 
