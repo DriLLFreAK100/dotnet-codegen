@@ -61,11 +61,11 @@ public class TypeScriptTest : TypeScriptTestBase
 
         var expected = string.Join(_dryRunGenerator.GetOption().LineSeparator, new string[]
         {
-            "import { ImportChild1 } from '../../import-child-1.ts';",
-            "import { ImportChild2 } from '../../other/import-child-2.ts';",
-            "import { ImportChild3 } from '../import-child-3.ts';",
-            "import { ImportChild4 } from './import-child-4.ts';",
-            "import { ImportChild5 } from './layer/import-child-5.ts';",
+            "import { ImportChild1 } from '../../import-child-1';",
+            "import { ImportChild2 } from '../../other/import-child-2';",
+            "import { ImportChild3 } from '../import-child-3';",
+            "import { ImportChild4 } from './import-child-4';",
+            "import { ImportChild5 } from './layer/import-child-5';",
         });
 
         Assert.IsTrue(importsContent == expected);
