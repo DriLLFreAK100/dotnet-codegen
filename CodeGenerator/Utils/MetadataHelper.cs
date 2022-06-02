@@ -186,6 +186,55 @@ namespace CodeGenerator.Utils
         }
 
         /// <summary>
+        /// Determine target generated types,
+        /// i.e. direct class, classes within Dictionary, List, etc.
+        /// </summary>
+        /// <returns></returns>
+        public static List<Type> GetDependencyTargetTypes(this Type type)
+        {
+            if (!type.IsGenericType)
+            {
+                return new() { type };
+            }
+
+            var genericType = type.GetGenericTypeDefinition();
+            var args = type.GetGenericArguments();
+
+            // Dictionary
+            if (genericType.IsDictionary())
+            {
+                List<Type> result = new();
+
+                if (args[0].IsCustomType())
+                {
+                    result.AddRange(args[0].GetDependencyTargetTypes());
+                }
+
+                if (args[1].IsCustomType())
+                {
+                    result.AddRange(args[1].GetDependencyTargetTypes());
+                }
+
+                return result;
+            }
+
+            // Other Enumerables
+            if (genericType.IsList())
+            {
+                List<Type> result = new();
+
+                if (args[0].IsCustomType())
+                {
+                    result.AddRange(args[0].GetDependencyTargetTypes());
+                }
+
+                return result;
+            }
+
+            return new();
+        }
+
+        /// <summary>
         /// Get types that require import from current type
         /// </summary>
         /// <param name="type"></param>
@@ -195,7 +244,7 @@ namespace CodeGenerator.Utils
             return type
                 .GetProperties()
                 .Where(p => p.PropertyType.IsCustomType())
-                .Select(p => p.PropertyType)
+                .SelectMany(p => p.PropertyType.GetDependencyTargetTypes())
                 .ToList();
         }
     }

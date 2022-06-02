@@ -93,5 +93,35 @@ namespace CodeGenerator.Test.Utils
 			var deps = typeof(ObjectDto).GetTypeDependencies();
 			Assert.IsTrue(deps.Contains(typeof(ChildDto)));
 		}
+
+		[TestMethod("Should Be Able To Get Type Dependencies In List")]
+		public void ShouldBeAbleToGetTypeDependenciesInList()
+		{
+			var deps = typeof(ListDto).GetTypeDependencies();
+			Assert.IsTrue(deps.Contains(typeof(ChildDto)));
+		}
+
+		[TestMethod("Should Be Able To Get Type Dependencies In Dictionary")]
+		public void ShouldBeAbleToGetTypeDependenciesInDictionary()
+		{
+			var deps = typeof(DictionaryDto).GetTypeDependencies();
+			Assert.IsTrue(deps.Contains(typeof(ChildDto)));
+		}
+
+		[TestMethod("Should Be Able To Get Dependency Target Types")]
+		public void ShouldBeAbleToGetDependencyTargetTypes()
+		{
+			Assert.IsTrue(typeof(ObjectDto).GetDependencyTargetTypes().Contains(typeof(ObjectDto)));
+
+			Assert.IsTrue(typeof(List<ObjectDto>).GetDependencyTargetTypes().Contains(typeof(ObjectDto)));
+
+			Assert.IsTrue(typeof(Dictionary<int, ObjectDto>).GetDependencyTargetTypes().Contains(typeof(ObjectDto)));
+
+			Assert.IsTrue(typeof(Dictionary<ObjectDto, int>).GetDependencyTargetTypes().Contains(typeof(ObjectDto)));
+
+			var multiTypes = typeof(Dictionary<ObjectDto, ListDto>).GetDependencyTargetTypes();
+			Assert.IsTrue(multiTypes.Contains(typeof(ObjectDto)));
+			Assert.IsTrue(multiTypes.Contains(typeof(ListDto)));
+		}
 	}
 }

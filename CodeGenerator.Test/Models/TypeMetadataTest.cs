@@ -43,16 +43,18 @@ namespace CodeGenerator.Test.Models
 		[TestMethod("Should Be Able To Derive Full File Name")]
 		public void ShouldBeAbleToDeriveFullFileName()
 		{
-			Assert.IsTrue(_metadata.FullOutputPath == ".//metadata-mock.ts");
+			var executionPath = AppDomain.CurrentDomain.BaseDirectory;
+
+			Assert.IsTrue(_metadata.FullOutputPath == $"{executionPath}/.//metadata-mock.ts");
 
 			TypeMetadata metaPath = new(typeof(MetadataMockPath), "./");
-			Assert.IsTrue(metaPath.FullOutputPath == ".//mockPath/metadata-mock-path.ts");
+			Assert.IsTrue(metaPath.FullOutputPath == $"{executionPath}/.//mockPath/metadata-mock-path.ts");
 
 			TypeMetadata metaFileName = new(typeof(MetadataMockFileName), "./");
-			Assert.IsTrue(metaFileName.FullOutputPath == ".//some-name.ts");
+			Assert.IsTrue(metaFileName.FullOutputPath == $"{executionPath}/.//some-name.ts");
 
 			TypeMetadata metaMixed = new(typeof(MetadataMockMixed), "./");
-			Assert.IsTrue(metaMixed.FullOutputPath == ".//mockPath/some-name.ts");
+			Assert.IsTrue(metaMixed.FullOutputPath == $"{executionPath}/.//mockPath/some-name.ts");
 		}
 	}
 }
