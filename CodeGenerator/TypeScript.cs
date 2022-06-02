@@ -13,17 +13,9 @@ namespace CodeGenerator
         {
             // 1 - Get all annotated
             var types = GetAnnotatedTypes<GenerateTsAttribute>();
-            //var store = types.ToDictionary(x => x, _ => new Output());
 
             // 2 - Generate metadata
-            var metadata = types
-                .SelectMany(type => type.GetTargetTypes())
-                .Distinct()
-                .Select(type =>
-                {
-                    return new TypeMetadata(type, GetOption().RelativeBaseOutputPath);
-                })
-                .ToList();
+            var metadata = GetTypeMetadatas(types);
 
             // 3 - Generate output based on metadata
             var result = GenerateOutputs(metadata);
@@ -50,6 +42,7 @@ namespace CodeGenerator
                     {
                         FileContent.HeaderNotes,
                         GetImportsContent(x, dict),
+                        GetInterfaceContent(x, dict),
                     };
 
                     outputs.Add(new(
@@ -59,6 +52,61 @@ namespace CodeGenerator
             });
 
             return outputs;
+        }
+
+        /// <summary>
+        /// Generate metadata list
+        /// </summary>
+        /// <param name="types"></param>
+        /// <returns></returns>
+        private List<TypeMetadata> GetTypeMetadatas(List<Type> types)
+        {
+            return types
+                .SelectMany(type => type.GetTargetTypes())
+                .Distinct()
+                .Select(type =>
+                {
+                    return new TypeMetadata(type, GetOption().RelativeBaseOutputPath);
+                })
+                .ToList();
+        }
+
+        /// <summary>
+        /// Retrive interface content
+        /// </summary>
+        /// <param name="meta"></param>
+        /// <param name="dict"></param>
+        /// <returns></returns>
+        private string GetInterfaceContent(TypeMetadata meta, Dictionary<Type, TypeMetadata> dict)
+        {
+            List<string> content = new();
+
+            content.Add($"export interface {meta.OutputName} {{");
+
+            content.AddRange(meta.Type.GetProperties().Select(p =>
+            {
+                var t = p.PropertyType;
+                var fieldName = p.Name.PascalToCamel();
+
+                // Built-in Types
+                if (t.IsBuiltInType())
+                {
+                    return $"   {fieldName}: {t.GetBuiltInTsType()};";
+                }
+
+                // List Types
+                if (t.IsList())
+                {
+                    return $"   {fieldName}: {GetTsTypeForList(t, dict)};";
+                }
+
+                // Other Objects
+                return $"   {fieldName}: {GetTsTypeForObject(t, dict)};";
+            }));
+
+            content.Add("}");
+
+            return string.Join(GetOption().LineSeparator, content);
         }
 
         /// <summary>
@@ -99,7 +147,7 @@ namespace CodeGenerator
             List<TypeMetadata> imports)
         {
             Uri from = new(main.FullOutputPath);
-            
+
             var result = imports.Select(t =>
             {
                 // Compute relative path
@@ -117,6 +165,32 @@ namespace CodeGenerator
             });
 
             return string.Join(GetOption().LineSeparator, result);
+        }
+
+        /// <summary>
+        /// Get TypeScript type content for list
+        /// </summary>
+        /// <returns></returns>
+        private string GetTsTypeForList(Type type, Dictionary<Type, TypeMetadata> dict)
+        {
+            var args = type.GetGenericArguments();
+            return $"{GetTsTypeForObject(args[0], dict)}[]";
+        }
+
+        /// <summary>
+        /// Get TypeScript type content for Object
+        /// </summary>
+        /// <param name="type"></param>
+        /// <param name="dict"></param>
+        /// <returns></returns>
+        private string GetTsTypeForObject(Type type, Dictionary<Type, TypeMetadata> dict)
+        {
+            if (dict.TryGetValue(type, out var value))
+            {
+                return $"{value.OutputName}";
+            }
+
+            return $"{type.GetBuiltInTsType()}";
         }
     }
 }
