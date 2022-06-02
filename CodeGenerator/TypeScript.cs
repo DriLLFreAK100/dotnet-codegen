@@ -44,7 +44,7 @@ namespace CodeGenerator
                         FileContent.HeaderNotes,
                         GetImportsContent(t, dict),
                         GetInterfaceContent(t, dict),
-                        };
+                    };
 
                     return new Output(
                         t.FullOutputPath,
@@ -121,6 +121,7 @@ namespace CodeGenerator
                 .GetTypeDependencies()
                 .Where(t => getTypeMetadata(t).IsAnnotated)
                 .Select(t => getTypeMetadata(t))
+                .DistinctBy(t => t.Type)
                 .ToList();
 
             // Construct import content
