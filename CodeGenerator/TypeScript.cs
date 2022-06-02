@@ -155,6 +155,9 @@ namespace CodeGenerator
                     relativePath = $"./{relativePath}";
                 }
 
+                // Remove file extension
+                relativePath = relativePath[0..^3];
+
                 return $"import {{ {t.OutputName} }} from '{relativePath}';";
             });
 
