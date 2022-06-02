@@ -94,18 +94,7 @@ namespace CodeGenerator
                     return $"   {fieldName}: {t.GetBuiltInTsType()};";
                 }
 
-                // List Types
-                if (t.IsList())
-                {
-                    return $"   {fieldName}: {GetTsTypeForList(t, dict)};";
-                }
-
-                if (t.IsDictionary())
-                {
-                    return $"   {fieldName}: {GetTsTypeForDictionary(t, dict)};";
-                }
-
-                // Other Objects
+                // Objects
                 return $"   {fieldName}: {GetTsTypeForObject(t, dict)};";
             }));
 
@@ -173,16 +162,6 @@ namespace CodeGenerator
         }
 
         /// <summary>
-        /// Get TypeScript type content for list
-        /// </summary>
-        /// <returns></returns>
-        private string GetTsTypeForList(Type type, Dictionary<Type, TypeMetadata> dict)
-        {
-            var args = type.GetGenericArguments();
-            return $"{GetTsTypeForObject(args[0], dict)}[]";
-        }
-
-        /// <summary>
         /// Get TypeScript type content for Object
         /// </summary>
         /// <param name="type"></param>
@@ -190,28 +169,38 @@ namespace CodeGenerator
         /// <returns></returns>
         private string GetTsTypeForObject(Type type, Dictionary<Type, TypeMetadata> dict)
         {
-            if (dict.TryGetValue(type, out var value))
+            // Built-In Types
+            if (type.IsBuiltInType())
             {
-                return $"{value.OutputName}";
+                return type.GetBuiltInTsType();
             }
 
-            return $"{type.GetBuiltInTsType()}";
-        }
+            // Tracked Meta
+            if (dict.TryGetValue(type, out var trackedType))
+            {
+                return $"{trackedType.OutputName}";
+            }
 
-        /// <summary>
-        /// Get TypeScript type content for Dictionary
-        /// </summary>
-        /// <param name="type"></param>
-        /// <param name="dict"></param>
-        /// <returns></returns>
-        private string GetTsTypeForDictionary(Type type, Dictionary<Type, TypeMetadata> dict)
-        {
-            var args = type.GetGenericArguments();
+            // Dictionary
+            if (type.IsDictionary())
+            {
+                var args = type.GetGenericArguments();
 
-            var key = GetTsTypeForObject(args[0], dict);
-            var value = GetTsTypeForObject(args[1], dict);
+                var key = GetTsTypeForObject(args[0], dict);
+                var value = GetTsTypeForObject(args[1], dict);
 
-            return $"{{ [key: {key}]: {value} }}";
+                return $"{{ [key: {key}]: {value} }}";
+            }
+
+            // List Types
+            if (type.IsList())
+            {
+                var args = type.GetGenericArguments();
+                return $"{GetTsTypeForObject(args[0], dict)}[]";
+            }
+
+            // Other Objects
+            return TsType.Any;
         }
     }
 }
