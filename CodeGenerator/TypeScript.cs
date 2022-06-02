@@ -33,25 +33,22 @@ namespace CodeGenerator
             List<Output> outputs = new();
             var dict = typeMetadatas.ToDictionary(x => x.Type, x => x);
 
-            typeMetadatas.ForEach(x =>
-            {
-                // Only types annotated with GeneratedTs will be generated
-                if (x.IsAnnotated)
+            return typeMetadatas
+                .Where(t => t.IsAnnotated)
+                .Select(t =>
                 {
                     List<string> content = new()
                     {
                         FileContent.HeaderNotes,
-                        GetImportsContent(x, dict),
-                        GetInterfaceContent(x, dict),
+                        GetImportsContent(t, dict),
+                        GetInterfaceContent(t, dict),
                     };
 
-                    outputs.Add(new(
-                        x.FullOutputPath,
-                        string.Join(GetOption().LineSeparator, content)));
-                }
-            });
-
-            return outputs;
+                    return new Output(
+                        t.FullOutputPath,
+                        string.Join(GetOption().LineSeparator, content));
+                })
+                .ToList();
         }
 
         /// <summary>
