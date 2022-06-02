@@ -100,6 +100,11 @@ namespace CodeGenerator
                     return $"   {fieldName}: {GetTsTypeForList(t, dict)};";
                 }
 
+                if (t.IsDictionary())
+                {
+                    return $"   {fieldName}: {GetTsTypeForDictionary(t, dict)};";
+                }
+
                 // Other Objects
                 return $"   {fieldName}: {GetTsTypeForObject(t, dict)};";
             }));
@@ -191,6 +196,22 @@ namespace CodeGenerator
             }
 
             return $"{type.GetBuiltInTsType()}";
+        }
+
+        /// <summary>
+        /// Get TypeScript type content for Dictionary
+        /// </summary>
+        /// <param name="type"></param>
+        /// <param name="dict"></param>
+        /// <returns></returns>
+        private string GetTsTypeForDictionary(Type type, Dictionary<Type, TypeMetadata> dict)
+        {
+            var args = type.GetGenericArguments();
+
+            var key = GetTsTypeForObject(args[0], dict);
+            var value = GetTsTypeForObject(args[1], dict);
+
+            return $"{{ [key: {key}]: {value} }}";
         }
     }
 }

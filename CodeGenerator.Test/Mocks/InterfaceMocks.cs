@@ -20,6 +20,8 @@ namespace CodeGenerator.Test.Mocks
         public List<InterfaceNonAnnotatedChild> UnknownChildren { get; set; }
 
         public List<InterfaceChild> Children { get; set; }
+
+        public Dictionary<int, string> BuiltInDict { get; set; }
     }
 
     public class InterfaceNonAnnotatedChild

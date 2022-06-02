@@ -79,6 +79,7 @@ public class TypeScriptTest
             "   childIds: number[];",
             "   unknownChildren: any[];",
             "   children: InterfaceChild[];",
+            "   builtInDict: { [key: number]: string };",
             "}",
         });
 
