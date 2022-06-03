@@ -4,7 +4,7 @@ This project is intended to create an easy to use CodeGenerator for C#.
 Currently, this is only targeting `C# to TypeScript` as the development use case.
 
 ## Installation
-You can find it in `NuGet`. The package name is `DotnetCodegen`.
+You can find it in [NuGet](https://www.nuget.org/packages/DotnetCodegen/). The package name is [DotnetCodegen](https://www.nuget.org/packages/DotnetCodegen/).
 
 Or simply install it using the dotnet cli
 ```
