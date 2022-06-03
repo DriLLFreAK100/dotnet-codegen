@@ -3,6 +3,14 @@ This project is intended to create an easy to use CodeGenerator for C#.
 
 Currently, this is only targeting `C# to TypeScript` as the development use case.
 
+## Installation
+You can find it in `NuGet`. The package name is `DotnetCodegen`.
+
+Or simply install it using the dotnet cli
+```
+dotnet add package DotnetCodegen
+```
+
 ## Basic Usage
 Simply annotate the C# classes that you would like to generate their `TypeScript interfaces`.
 
@@ -47,6 +55,15 @@ public class YourChildClass
     public int SomeProp { get; set; }
 }
 ```
+
+## GenerateTs Attribute
+All classes annotated with `GenerateTs` will get their TS interfaces generated.
+
+The are some parameters in the attribute to customize the code generation behavior too. For full list, refer to https://github.com/DriLLFreAK100/dotnet-codegen/blob/main/CodeGenerator/Attributes/GenerateTsAttribute.cs
+
+Basically,
+- `Path` - path to generate the file (within <ins>[Absolute|Relative]BaseOutputPath</ins> configured in generator `Option`)
+- `FileName` - custom name for the generated file
 
 ## Dry Run
 You can also perform a dry run to check what are the outputs from the generation by specifying `IsDryRun` as `true` in the option
