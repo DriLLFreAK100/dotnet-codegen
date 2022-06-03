@@ -30,7 +30,7 @@ namespace CodeGenerator.Test
 
             _generator = new TypeScript(new Option()
             {
-                RelativeBaseOutputPath = "./Outputs",
+                RelativeBaseOutputPath = "../../../Generated",
                 TargetAssemblies = new()
                 {
                     Assembly.GetAssembly(typeof(TypeScriptTest)),

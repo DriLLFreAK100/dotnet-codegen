@@ -28,6 +28,8 @@ namespace CodeGenerator.Test.Mocks
         public DateTime DateTime { get; set; }
 
         public DateTime? NullableDateTime { get; set; }
+
+        public InterfaceEnum SomeEnum { get; set; }
     }
 
     public class InterfaceNonAnnotatedChild
@@ -39,5 +41,10 @@ namespace CodeGenerator.Test.Mocks
     public class InterfaceChild
     {
         public int Id { get; set; }
+    }
+
+    [GenerateTs]
+    public enum InterfaceEnum
+    {
     }
 }

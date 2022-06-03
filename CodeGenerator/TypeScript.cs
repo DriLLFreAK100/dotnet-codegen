@@ -41,7 +41,7 @@ namespace CodeGenerator
                     {
                         FileContent.HeaderNotes,
                         GetImportsContent(t, dict),
-                        GetInterfaceContent(t, dict),
+                        GetTypeContent(t, dict) + GetOption().LineSeparator,
                     }
                     .Where(c => !string.IsNullOrWhiteSpace(c));
 
@@ -70,6 +70,43 @@ namespace CodeGenerator
         }
 
         /// <summary>
+        /// Retrieve content for meta type
+        /// </summary>
+        /// <param name="meta"></param>
+        /// <param name="dict"></param>
+        /// <returns></returns>
+        private string GetTypeContent(TypeMetadata meta, Dictionary<Type, TypeMetadata> dict)
+        {
+            if (meta.Type.IsEnum)
+            {
+                return GetEnumContent(meta);
+            }
+
+            return GetInterfaceContent(meta, dict);
+        }
+
+        /// <summary>
+        /// Retrieve enum content
+        /// </summary>
+        /// <param name="meta"></param>
+        /// <returns></returns>
+        private string GetEnumContent(TypeMetadata meta)
+        {
+            List<string> content = new();
+
+            content.Add($"export enum {meta.OutputName} {{");
+
+            foreach (var value in Enum.GetValues(meta.Type))
+            {
+                content.Add($"  {value} = {(int)value},");
+            }
+
+            content.Add("}");
+
+            return string.Join(GetOption().LineSeparator, content);
+        }
+
+        /// <summary>
         /// Retrive interface content
         /// </summary>
         /// <param name="meta"></param>
@@ -89,16 +126,16 @@ namespace CodeGenerator
                 // Built-in Types
                 if (t.IsBuiltInType())
                 {
-                    return $"   {fieldName}: {t.GetBuiltInTsType()};";
+                    return $"  {fieldName}: {t.GetBuiltInTsType()};";
                 }
 
                 // Objects
-                return $"   {fieldName}: {GetTsTypeForObject(t, dict)};";
+                return $"  {fieldName}: {GetTsTypeForObject(t, dict)};";
             }));
 
             content.Add("}");
 
-            return string.Join(GetOption().LineSeparator, content) + GetOption().LineSeparator;
+            return string.Join(GetOption().LineSeparator, content);
         }
 
         /// <summary>
@@ -208,7 +245,7 @@ namespace CodeGenerator
             {
                 var args = type.GetGenericArguments();
                 return $"{GetTsTypeForObject(args[0], dict)}[]";
-            }            
+            }
 
             // Other Objects
             return TsType.Any;

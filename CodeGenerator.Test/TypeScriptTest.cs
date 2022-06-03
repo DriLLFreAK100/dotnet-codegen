@@ -57,6 +57,7 @@ public class TypeScriptTest : TypeScriptTestBase
                 new TypeMetadata(typeof(ImportChild3), relativeRoot),
                 new TypeMetadata(typeof(ImportChild4), relativeRoot),
                 new TypeMetadata(typeof(ImportChild5), relativeRoot),
+                new TypeMetadata(typeof(ImportEnum), relativeRoot),
             });
 
         var expected = string.Join(_dryRunGenerator.GetOption().LineSeparator, new string[]
@@ -66,6 +67,7 @@ public class TypeScriptTest : TypeScriptTestBase
             "import { ImportChild3 } from '../import-child-3';",
             "import { ImportChild4 } from './import-child-4';",
             "import { ImportChild5 } from './layer/import-child-5';",
+            "import { ImportEnum } from '../../import-enum';",
         });
 
         Assert.IsTrue(importsContent == expected);
@@ -88,22 +90,44 @@ public class TypeScriptTest : TypeScriptTestBase
         var expected = string.Join(_dryRunGenerator.GetOption().LineSeparator, new string[]
         {
             "export interface InterfaceRoot {",
-            "   id: number;",
-            "   name: string;",
-            "   createdTime: string;",
-            "   nonAnnotatedChild: any;",
-            "   annotatedChild: InterfaceChild;",
-            "   childIds: number[];",
-            "   unknownChildren: any[];",
-            "   children: InterfaceChild[];",
-            "   builtInDict: { [key: number]: string };",
-            "   nullableInt: number | null;",
-            "   dateTime: string;",
-            "   nullableDateTime: string | null;",
+            "  id: number;",
+            "  name: string;",
+            "  createdTime: string;",
+            "  nonAnnotatedChild: any;",
+            "  annotatedChild: InterfaceChild;",
+            "  childIds: number[];",
+            "  unknownChildren: any[];",
+            "  children: InterfaceChild[];",
+            "  builtInDict: { [key: number]: string };",
+            "  nullableInt: number | null;",
+            "  dateTime: string;",
+            "  nullableDateTime: string | null;",
+            "  someEnum: InterfaceEnum;",
             "}",
-            "",
         });
 
         Assert.IsTrue(interfaceContent == expected);
+    }
+
+    [TestMethod("Should Be Able To Generate Enum")]
+    public void ShouldBeAbleToGenerateEnum()
+    {
+        PrivateObject po = new(_dryRunGenerator);
+
+        var enumContent = (string)po.Invoke(
+            "GetEnumContent",
+            new TypeMetadata(typeof(LanguageType), string.Empty) { });
+
+        var expected = string.Join(_dryRunGenerator.GetOption().LineSeparator, new string[]
+        {
+            "export enum LanguageType {",
+            "  CSharp = 1,",
+            "  Java = 2,",
+            "  JavaScript = 4,",
+            "  Others = 8,",
+            "}",
+        });
+
+        Assert.IsTrue(enumContent == expected);
     }
 }

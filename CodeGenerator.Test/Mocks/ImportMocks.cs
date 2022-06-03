@@ -14,6 +14,13 @@ namespace CodeGenerator.Test.Mocks
         public ImportChild4 Child4 { get; set; }
 
         public ImportChild5 Child5 { get; set; }
+
+        public ImportEnum EnumChild { get; set; }
+    }
+
+    [GenerateTs]
+    public enum ImportEnum
+    {
     }
 
     [GenerateTs]
