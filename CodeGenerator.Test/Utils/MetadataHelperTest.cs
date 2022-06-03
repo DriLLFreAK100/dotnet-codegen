@@ -34,6 +34,15 @@ namespace CodeGenerator.Test.Utils
 			Assert.IsFalse(str.GetType().IsList());
 		}
 
+		[TestMethod("Should Be Able To Check If It Is Nullable")]
+		public void ShouldBeAbleToCheckIfItIsNullable()
+		{
+			Assert.IsTrue(typeof(int?).IsNullable());
+			Assert.IsFalse(typeof(string).IsNullable());
+			Assert.IsFalse(typeof(ObjectDto).IsNullable());
+			Assert.IsFalse(typeof(List<int>).IsNullable());
+		}
+
 		[TestMethod("Should Be Able To Consolidate Types For List")]
 		public void ShouldBeAbleToConsolidateTypesForList()
 		{

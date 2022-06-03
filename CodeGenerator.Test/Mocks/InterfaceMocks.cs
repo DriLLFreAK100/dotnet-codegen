@@ -22,6 +22,12 @@ namespace CodeGenerator.Test.Mocks
         public List<InterfaceChild> Children { get; set; }
 
         public Dictionary<int, string> BuiltInDict { get; set; }
+
+        public int? NullableInt { get; set; }
+
+        public DateTime DateTime { get; set; }
+
+        public DateTime? NullableDateTime { get; set; }
     }
 
     public class InterfaceNonAnnotatedChild

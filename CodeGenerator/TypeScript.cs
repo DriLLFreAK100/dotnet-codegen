@@ -179,6 +179,13 @@ namespace CodeGenerator
                 return type.GetBuiltInTsType();
             }
 
+            // Nullable
+            if (type.IsNullable())
+            {
+                var underlyingType = Nullable.GetUnderlyingType(type);
+                return $"{GetTsTypeForObject(underlyingType, dict)} | null";
+            }
+
             // Tracked Meta
             if (dict.TryGetValue(type, out var trackedType))
             {
@@ -201,7 +208,7 @@ namespace CodeGenerator
             {
                 var args = type.GetGenericArguments();
                 return $"{GetTsTypeForObject(args[0], dict)}[]";
-            }
+            }            
 
             // Other Objects
             return TsType.Any;

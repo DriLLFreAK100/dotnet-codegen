@@ -153,6 +153,16 @@ namespace CodeGenerator.Utils
         }
 
         /// <summary>
+        /// Check if a type is Nullable
+        /// </summary>
+        /// <param name="type"></param>
+        /// <returns></returns>
+        public static bool IsNullable(this Type type)
+        {
+            return Nullable.GetUnderlyingType(type) is not null;
+        }
+
+        /// <summary>
         /// Get custom attribute in target type
         /// </summary>
         /// <typeparam name="T"></typeparam>

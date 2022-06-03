@@ -97,6 +97,9 @@ public class TypeScriptTest : TypeScriptTestBase
             "   unknownChildren: any[];",
             "   children: InterfaceChild[];",
             "   builtInDict: { [key: number]: string };",
+            "   nullableInt: number | null;",
+            "   dateTime: string;",
+            "   nullableDateTime: string | null;",
             "}",
             "",
         });

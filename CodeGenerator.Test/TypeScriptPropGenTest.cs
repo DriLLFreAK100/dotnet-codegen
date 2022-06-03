@@ -121,6 +121,17 @@ namespace CodeGenerator.Test
 
             Assert.IsTrue(dicts == "{ [key: ObjectDto]: { [key: number]: ChildDto }[] }");
         }
+
+        [TestMethod("Should Be Able To Generate Nullable")]
+        public void ShouldBeAbleToGenerateNullable()
+        {
+            var nullableInt = (string)_po.Invoke(
+                "GetTsTypeForObject",
+                typeof(int?),
+                _metadataDict);
+
+            Assert.IsTrue(nullableInt == "number | null");
+        }
     }
 }
 
