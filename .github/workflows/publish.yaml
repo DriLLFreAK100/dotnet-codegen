@@ -1,21 +1,40 @@
 name: Publish
+
 on: [push]
+
+env:
+  TARGET_PROJ: 'CodeGenerator'
+  CSPROJ: '${{ env.TARGET_PROJ }}/CodeGenerator.csproj'
+  GITHUB_NUGET_SOURCE_URL: 'https://nuget.pkg.github.com/drillfreak100/index.json'
+
 jobs:
-  deploy:
+  build-test-publish:
     runs-on: ubuntu-latest
     permissions:
       packages: write
       contents: read
     steps:
-      - uses: actions/checkout@v3
-      - uses: actions/setup-dotnet@v2
+      - name: Checkout repo
+        uses: actions/checkout@v3
+
+      - name: Setup .NET Core SDK
+        uses: actions/setup-dotnet@v2
         with:
-          dotnet-version: '6.x' # SDK Version to use.
-          source-url: https://nuget.pkg.github.com/drillfreak100/index.json
+          dotnet-version: '6.x'
         env:
           NUGET_AUTH_TOKEN: ${{secrets.GITHUB_TOKEN}}
-      - run: dotnet build --configuration Release CodeGenerator
-      - name: Create the package
-        run: dotnet pack --configuration Release CodeGenerator
-      - name: Publish the package to GPR
-        run: dotnet nuget push CodeGenerator/bin/Release/*.nupkg
+      
+      - name: Install dependencies
+        run: dotnet restore ${{ env.CSPROJ }}
+
+      - name: Build
+        run: dotnet build ${{ env.CSPROJ }} --configuration Release --no-restore
+
+      - name: Test
+        run: dotnet test --no-restore --verbosity normal
+
+      - name: Pack
+        run: dotnet pack ${{ env.CSPROJ }} --no-restore --no-build --configuration Release
+
+      - name: Publish to GitHub Packages
+        run: dotnet nuget push ${{ env.TARGET_PROJ }}/bin/Release/*.nupkg -k  -s ${{ env.GITHUB_NUGET_SOURCE_URL }}
