@@ -1,34 +1,21 @@
 name: Publish
 on: [push]
 jobs:
-  build-test-publish:
+  deploy:
     runs-on: ubuntu-latest
     permissions:
       packages: write
       contents: read
     steps:
-      - name: Checkout repo
-        uses: actions/checkout@v3
-
-      - name: Setup .NET Core SDK
-        uses: actions/setup-dotnet@v2
+      - uses: actions/checkout@v3
+      - uses: actions/setup-dotnet@v2
         with:
-          dotnet-version: '6.x'
-          source-url: https://nuget.pkg.github.com/drillfreak100/index.json
+          dotnet-version: '3.1.x' # SDK Version to use.
+          source-url: https://nuget.pkg.github.com/<owner>/index.json
         env:
           NUGET_AUTH_TOKEN: ${{secrets.GITHUB_TOKEN}}
-      
-      - name: Install dependencies
-        run: dotnet restore
-
-      - name: Test
-        run: dotnet test --no-restore --verbosity normal
-
-      - name: Build
-        run: dotnet build --configuration Release --no-restore CodeGenerator/CodeGenerator.csproj
-
+      - run: dotnet build --configuration Release <my project>
       - name: Create the package
-        run: dotnet pack --configuration Release CodeGenerator/CodeGenerator.csproj
-
+        run: dotnet pack --configuration Release <my project>
       - name: Publish the package to GPR
-        run: dotnet nuget push CodeGenerator/bin/Release/*.nupkg
+        run: dotnet nuget push <my project>/bin/Release/*.nupkg
