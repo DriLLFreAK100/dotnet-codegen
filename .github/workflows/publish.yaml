@@ -11,7 +11,7 @@ jobs:
         uses: actions/setup-dotnet@v2
         with:
           dotnet-version: '6.x'
-          source-url: https://nuget.pkg.github.com/<owner>/index.json
+          source-url: https://nuget.pkg.github.com/drillfreak100/index.json
         env:
           NUGET_AUTH_TOKEN: ${{secrets.GITHUB_TOKEN}}
       
