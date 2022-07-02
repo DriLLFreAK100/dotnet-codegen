@@ -3,6 +3,9 @@ on: [push]
 jobs:
   build-test-publish:
     runs-on: ubuntu-latest
+    permissions:
+      packages: write
+      contents: read
     steps:
       - name: Checkout repo
         uses: actions/checkout@v3
