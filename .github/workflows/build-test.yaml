@@ -1,8 +1,6 @@
-# Test build
 name: Build and Test
 
 on:
-  push:
   pull_request:
     types:
       - opened
