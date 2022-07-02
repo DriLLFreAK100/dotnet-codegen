@@ -9,8 +9,11 @@ jobs:
 
       - name: Setup .NET Core SDK
         uses: actions/setup-dotnet@v2
-        with: 
+        with:
           dotnet-version: '6.x'
+          source-url: https://nuget.pkg.github.com/<owner>/index.json
+        env:
+          NUGET_AUTH_TOKEN: ${{secrets.GITHUB_TOKEN}}
       
       - name: Install dependencies
         run: dotnet restore
@@ -19,7 +22,7 @@ jobs:
         run: dotnet test --no-restore --verbosity normal
 
       - name: Build
-        run: dotnet build --configuration Release --no-restore
+        run: dotnet build --configuration Release --no-restore CodeGenerator/CodeGenerator.csproj
 
       - name: Create the package
         run: dotnet pack --configuration Release CodeGenerator/CodeGenerator.csproj
