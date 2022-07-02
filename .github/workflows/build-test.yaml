@@ -1,10 +1,7 @@
-# Test build
 name: Build and Test
 
 on:
   pull_request:
-    types:
-      - opened
     branches:
       - main
 
