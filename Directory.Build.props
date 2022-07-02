@@ -1,3 +1,4 @@
+<!-- Using this for simple package version control for now -->
 <Project>
     <PropertyGroup>
         <Version>0.0.2</Version>
