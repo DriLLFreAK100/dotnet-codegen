@@ -4,7 +4,7 @@
     <TargetFramework>net6.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <PackageId>DotnetCodegen</PackageId>
-    <Version>0.0.1</Version>
+    <Version>$(Version)</Version>
     <Authors>drillfreak100</Authors>
     <PackageDescription>Generate TS interfaces from your C# classes</PackageDescription>
     <RepositoryUrl>https://github.com/DriLLFreAK100/dotnet-codegen.git</RepositoryUrl>

@@ -1,41 +1,49 @@
-name: Publish
+# name: Publish
 
-on: [push]
+# on:
+#   pull_request:
+#     types:
+#       - closed
+#     branches:
+#       - main
+#     paths:
+#       - Directory.Build.props
 
-env: 
-  CSPROJ: CodeGenerator/CodeGenerator.csproj
-  GITHUB_NUGET_SOURCE_URL: https://nuget.pkg.github.com/drillfreak100/index.json
-  NUGET_ORG_SOURCE_URL: https://api.nuget.org/v3/index.json
+# env: 
+#   CSPROJ: CodeGenerator/CodeGenerator.csproj
+#   GITHUB_NUGET_SOURCE_URL: https://nuget.pkg.github.com/drillfreak100/index.json
+#   NUGET_ORG_SOURCE_URL: https://api.nuget.org/v3/index.json
 
-jobs:
-  build-test-publish:
-    runs-on: ubuntu-latest
-    permissions:
-      packages: write
-      contents: read
-    steps:
-      - name: Checkout repo
-        uses: actions/checkout@v3
+# jobs:
+#   build-test-publish:
+#     if: github.event.pull_request.merged == true
+#     runs-on: ubuntu-latest
+#     permissions:
+#       packages: write
+#       contents: read
+#     steps:
+#       - name: Checkout repo
+#         uses: actions/checkout@v3
 
-      - name: Setup .NET Core SDK
-        uses: actions/setup-dotnet@v2
-        with:
-          dotnet-version: '6.x'
+#       - name: Setup .NET Core SDK
+#         uses: actions/setup-dotnet@v2
+#         with:
+#           dotnet-version: '6.x'
       
-      - name: Install dependencies
-        run: dotnet restore ${{ env.CSPROJ }}
+#       - name: Install dependencies
+#         run: dotnet restore ${{ env.CSPROJ }}
 
-      - name: Build
-        run: dotnet build ${{ env.CSPROJ }} --configuration Release --no-restore
+#       - name: Build
+#         run: dotnet build ${{ env.CSPROJ }} --configuration Release --no-restore
 
-      - name: Test
-        run: dotnet test --no-restore --verbosity normal
+#       - name: Test
+#         run: dotnet test --no-restore --verbosity normal
 
-      - name: Pack
-        run: dotnet pack ${{ env.CSPROJ }} --no-restore --no-build --configuration Release
+#       - name: Pack
+#         run: dotnet pack ${{ env.CSPROJ }} --no-restore --no-build --configuration Release
 
-      - name: Publish to GitHub Packages
-        run: dotnet nuget push CodeGenerator/bin/Release/*.nupkg -k ${{secrets.GITHUB_TOKEN}} -s ${{ env.GITHUB_NUGET_SOURCE_URL }}
+#       - name: Publish to GitHub Packages
+#         run: dotnet nuget push CodeGenerator/bin/Release/*.nupkg -k ${{secrets.GITHUB_TOKEN}} -s ${{ env.GITHUB_NUGET_SOURCE_URL }}
 
-      - name: Publish to Nuget
-        run: dotnet nuget push CodeGenerator/bin/Release/*.nupkg -k ${{ secrets.NUGET_ORG_API_KEY }} -s ${{ env.NUGET_ORG_SOURCE_URL }}
+#       - name: Publish to Nuget
+#         run: dotnet nuget push CodeGenerator/bin/Release/*.nupkg -k ${{ secrets.NUGET_ORG_API_KEY }} -s ${{ env.NUGET_ORG_SOURCE_URL }}
