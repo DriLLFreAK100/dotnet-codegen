@@ -6,7 +6,7 @@
     <PackageId>DotnetCodegen</PackageId>
     <Version>0.0.1</Version>
     <Authors>drillfreak100</Authors>
-    <PackageDescription>Generate TS interfaces from your C# classes<PackageDescription>
+    <PackageDescription>Generate TS interfaces from your C# classes</PackageDescription>
     <RepositoryUrl>https://github.com/DriLLFreAK100/dotnet-codegen.git</RepositoryUrl>
   </PropertyGroup>
 
