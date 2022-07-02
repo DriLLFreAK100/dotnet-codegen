@@ -12,7 +12,7 @@ public class TypeScriptTest : TypeScriptTestBase
     {
         _generator.Generate();
 
-        var outputPath = _absolutePathGenerator.GetOption().ActiveBaseOutputPath;
+        var outputPath = _generator.GetOption().ActiveBaseOutputPath;
 
         Assert.IsTrue(Directory.Exists(outputPath));
         Assert.IsTrue(Directory.EnumerateFiles(outputPath).Any(f => f.EndsWith(".ts")));
